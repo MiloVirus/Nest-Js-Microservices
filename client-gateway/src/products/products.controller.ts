@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { PaginationDto, RpcCustomExceptionFilter } from 'src/common';
-import { CreateProductDto } from 'src/common/dto/create-product.dto';
-import { UpdateProductDto } from 'src/common/dto/update-product.dto';
+import { CreateProductDto } from 'src/products/dto/create-product.dto';
+import { UpdateProductDto } from 'src/products/dto/update-product.dto';
 import { PRODUCT_SERVICE } from 'src/config';
 
 
