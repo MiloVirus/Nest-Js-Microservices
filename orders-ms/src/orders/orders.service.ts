@@ -9,7 +9,11 @@ export class OrdersService  {
  constructor(private readonly prisma: PrismaService) {}
  
   create(createOrderDto: CreateOrderDto) {
-    return createOrderDto;
+    return this.prisma.order.create({
+      data: {
+        ...createOrderDto,
+      },
+    });
   }
 
   findAll() {
