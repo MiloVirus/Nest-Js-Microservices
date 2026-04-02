@@ -3,6 +3,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { PrismaService } from 'src/prisma.service';
 import { RpcException } from '@nestjs/microservices';
 import { OrderPaginationDto } from './dto/order-pagination.dto';
+import { ChangeOrderStatusDto } from './dto/change-order-status.dto';
 import { last } from 'rxjs';
 
 
@@ -13,11 +14,7 @@ export class OrdersService  {
  
  async create(createOrderDto: CreateOrderDto) {
   try {
-    return await this.prisma.order.create({
-      data: {
-        ...createOrderDto,
-      },
-    });
+    return{createOrderDto: createOrderDto, service: 'Orders MS'}
   } catch (error) {
     throw new RpcException({
       status: HttpStatus.BAD_REQUEST,
@@ -68,6 +65,26 @@ export class OrdersService  {
       })
     }
     return order;
+  }
+
+  async changeStatus(changeOrderStatusDto: ChangeOrderStatusDto) {
+    const {id, status} = changeOrderStatusDto;
+    const order = await this.prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!order) {
+      throw new RpcException({
+        status: HttpStatus.NOT_FOUND,
+        message: `Order with id ${id} not found`,
+      })
+    }
+
+    return await this.prisma.order.update({
+      where: {id},
+      data: {status},
+    });
   }
 
 }
